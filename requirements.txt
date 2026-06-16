@@ -1,0 +1,6 @@
+flask
+gunicorn
+pytest
+pytest-cov
+
+#Herramientas para levantar la web y realizar los tests automáticos
