@@ -1,17 +1,17 @@
-class ContadorVisitas:
-    # Las visitas comienzan en cero
+class ContadorClics:
+    # El contador de clics comienza en cero
     def __init__(self):
-        self.visitas = 0
+        self.clics = 0
 
-    # Se suma 1 al contador cada vez que alguien entra
+    # Se suma 1 al contador cada vez que alguien clickea el botón
     def incrementar(self):
-        self.visitas += 1
-        return self.visitas
+        self.clics += 1
+        return self.clics
 
-    # Devuelve cantidad de visitas 
-    def obtener_visitas(self):
-        return self.visitas
+    # Devuelve cantidad de clics
+    def obtener_clics(self):
+        return self.clics
 
     # Inicializa el contador a cero 
     def reiniciar(self):
-        self.visitas = 0
+        self.clics = 0
