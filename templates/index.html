@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagina random cuenta visitas</title>
+    <title>Pagina random cuenta clics</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -40,9 +40,9 @@
 <body>
 
     <div class="contenedor">
-        <h1>Contador de Visitas</h1>
+        <h1>Contador de Clics</h1>
         <div class="numero" id="contador">0</div>
-        <button onclick="registrarVisita()">Registro de visita</button>
+        <button onclick="registrarClic()">Clickeaaa</button>
     </div>
 
     <script>
@@ -56,11 +56,11 @@
         }
 
         // Cuando hacemos clic en el botón, le mandamos un aviso al servidor para sumar 1
-        function registrarVisita() {
-            fetch('/visita', { method: 'POST' })
+        function registrarClic() {
+            fetch('/clic', { method: 'POST' })
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById('contador').innerText = data.total_visitas;
+                    document.getElementById('contador').innerText = data.total_clics;
                 });
         }
     </script>

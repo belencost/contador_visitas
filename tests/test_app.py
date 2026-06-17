@@ -3,7 +3,7 @@ from src.app import app
 
 @pytest.fixture
 def client():
-    # Configuramos un cliente de pruebas falso
+    # Cliente de pruebas simulador
     app.config['TESTING'] = True
     with app.test_client() as client:
         yield client
@@ -14,9 +14,9 @@ def test_home_page(client):
     assert response.status_code == 200
 
 def test_api_incrementar(client):
-    # Simula hacer un clic para registrar una visita
-    response = client.post("/visita")
+    # Simula hacer un clic para registrarlo
+    response = client.post("/clics")
     assert response.status_code == 200
     data = response.get_json()
-    assert "total_visitas" in data
-    assert data["total_visitas"] == 1
+    assert "total_clics" in data
+    assert data["total_clics"] == 1
