@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina random cuenta visitas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            margin-top: 100px;
+        }
+        .contenedor {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+            display: inline-block;
+        }
+        h1 { color: #333; }
+        .numero {
+            font-size: 48px;
+            font-weight: bold;
+            color: #007bff;
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            color: white;
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover { background-color: #218838; }
+    </style>
+</head>
+<body>
+
+    <div class="contenedor">
+        <h1>Contador de Visitas</h1>
+        <div class="numero" id="contador">0</div>
+        <button onclick="registrarVisita()">Registro de visita</button>
+    </div>
+
+    <script>
+        // Cuando carga la página, se le pide al servidor el estado actual del contador
+        window.onload = function() {
+            fetch('/estado')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('contador').innerText = data.total_actual;
+                });
+        }
+
+        // Cuando hacemos clic en el botón, le mandamos un aviso al servidor para sumar 1
+        function registrarVisita() {
+            fetch('/visita', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('contador').innerText = data.total_visitas;
+                });
+        }
+    </script>
+
+</body>
+</html>
