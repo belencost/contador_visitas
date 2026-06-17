@@ -11,6 +11,8 @@ jobs:
     steps:
     - name: Clonar el código
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Sonar necesita todo el historial para analizar
 
     - name: Configurar Python
       uses: actions/setup-python@v5
@@ -22,26 +24,30 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Ejecutar pruebas automatizadas
+    # Generar el reporte de cobertura y correr tests
+    - name: Ejecutar pruebas y reporte de cobertura
       run: |
-        python -m pytest
+        python -m pytest --cov=src --cov-report=xml
 
-    
-#FEEDBACK
+    # Métricas
+    - name: Análisis de Código con SonarCloud
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+    # Notificación final a Discord
     - name: Notificar a Discord
       if: always()
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       run: |
-        # Ajustamos el reloj para tener la hora exacta de Argentina
         export TZ="America/Argentina/Buenos_Aires"
         FECHA=$(date +"%d/%m/%Y a las %H:%M:%S")
-        
-        # GitHub arma el enlace dinámico a la ejecución exacta
         LINK="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
         
         if [ "${{ job.status }}" == "success" ]; then
-          curl -H "Content-Type: application/json" -d "{\"content\": \"✅ **¡Éxito!** Las pruebas del Contador de Clics pasaron correctamente. Código desplegando en producción.\n📅 **Hora del reporte:** $FECHA\n🔗 [Hacé clic acá para ver los detalles]($LINK)\"}" $DISCORD_WEBHOOK
+          curl -H "Content-Type: application/json" -d "{\"content\": \"✅ **¡Éxito!** Las pruebas y el análisis de SonarCloud pasaron correctamente. Código desplegandose en producción.\n📅 **Hora del reporte:** $FECHA\n🔗 [Hacé clic acá para ver los detalles]($LINK)\"}" $DISCORD_WEBHOOK
         else
-          curl -H "Content-Type: application/json" -d "{\"content\": \"❌ **¡Alerta!** Algo salió mal. Las pruebas de Integración Continua fallaron. Revisalo.\n📅 **Hora del reporte:** $FECHA\n🔗 [Hacé clic acá para ver el error]($LINK)\"}" $DISCORD_WEBHOOK
+          curl -H "Content-Type: application/json" -d "{\"content\": \"❌ **¡Alerta!** El pipeline falló. Revisar pruebas o métricas de calidad.\n📅 **Hora del reporte:** $FECHA\n🔗 [Hacé clic acá para ver el error]($LINK)\"}" $DISCORD_WEBHOOK
         fi
