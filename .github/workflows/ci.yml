@@ -26,14 +26,22 @@ jobs:
       run: |
         python -m pytest
 
-    # Feedback
+    
+#FEEDBACK
     - name: Notificar a Discord
       if: always()
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       run: |
+        # Ajustamos el reloj para tener la hora exacta de Argentina
+        export TZ="America/Argentina/Buenos_Aires"
+        FECHA=$(date +"%d/%m/%Y a las %H:%M:%S")
+        
+        # GitHub arma el enlace dinámico a la ejecución exacta
+        LINK="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        
         if [ "${{ job.status }}" == "success" ]; then
-          curl -H "Content-Type: application/json" -d '{"content": "✅ **¡Éxitooo!** Las pruebas pasaron correctamente. El código se está desplegando en producción."}' $DISCORD_WEBHOOK
+          curl -H "Content-Type: application/json" -d "{\"content\": \"✅ **¡Éxito!** Las pruebas del Contador de Clics pasaron correctamente. Código desplegando en producción.\n📅 **Hora del reporte:** $FECHA\n🔗 [Hacé clic acá para ver los detalles]($LINK)\"}" $DISCORD_WEBHOOK
         else
-          curl -H "Content-Type: application/json" -d '{"content": "❌ **¡Alertaaa!** Algo salió mal. Las pruebas de Integración Continua fallaron. Revisalo"}' $DISCORD_WEBHOOK
+          curl -H "Content-Type: application/json" -d "{\"content\": \"❌ **¡Alerta!** Algo salió mal. Las pruebas de Integración Continua fallaron. Revisalo.\n📅 **Hora del reporte:** $FECHA\n🔗 [Hacé clic acá para ver el error]($LINK)\"}" $DISCORD_WEBHOOK
         fi
