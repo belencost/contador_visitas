@@ -9,7 +9,7 @@ def client():
         yield client
 
 def test_home_page(client):
-    # Simula entrar a la página principal y ver si responde bien (código 200)
+    # Simula entrar a la página principal y ver si responde bien (código200)
     response = client.get("/")
     assert response.status_code == 200
 
