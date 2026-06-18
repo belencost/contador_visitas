@@ -11,7 +11,7 @@ def client():
 def test_home_page(client):
     # Simula entrar a la página principal y ver si responde bien (código200)
     response = client.get("/")
-    assert response.status_code == 404
+    assert response.status_code == 200
 
 def test_api_incrementar(client):
     # Simula hacer un clic para registrarlo
