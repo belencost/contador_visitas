@@ -57,7 +57,7 @@
 
         // Cuando hacemos clic en el botón, le mandamos un aviso al servidor para sumar 1
         function registrarClic() {
-            fetch('/clic', { method: 'POST' })
+            fetch('/clics', { method: 'POST' })
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('contador').innerText = data.total_clics;
