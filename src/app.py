@@ -7,7 +7,7 @@ app = Flask(__name__, template_folder='../templates')
 # Creamos nuestro contador usando la clase que armamos en el contador.py
 contador = ContadorClics()
 
-# Cuando alguien entra a la ruta principal ("/"), le mostramos la página web (index.html)
+# Inclui el get para solucionar code smell
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.html")
