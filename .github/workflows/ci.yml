@@ -12,7 +12,7 @@ jobs:
     - name: Clonar el código
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0  # Sonar necesita todo el historial para analizar
+        fetch-depth: 0  # Sonar necesita todo el historial de commits para analizar
 
     - name: Configurar Python
       uses: actions/setup-python@v5
