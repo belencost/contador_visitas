@@ -65,6 +65,8 @@ pytest tests/
 
 ```
 
-Realizado por María Belén Costantín 
+Realizado por María Belén Costantín
+-
 Materia: Ingeniería y Calidad de Software
+-
 Año 2026
